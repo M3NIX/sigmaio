@@ -9,7 +9,7 @@
 
   <!-- Favicon and title -->
   <link rel="icon" href="path/to/fav.png">
-  <title>Starter template - Halfmoon</title>
+  <title>sigcoder - sigma to anything</title>
 
   <!-- Halfmoon CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.1.1/css/halfmoon.min.css" integrity="sha512-Kaju/JzlErKhC47smofkXAdSkvILovmvh2nnok6rgN79oB3Co/T7Pm7Ns8dcpNEN3VTVZDw2ilrUDByzInEabg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -31,18 +31,52 @@
     <!-- Navbar start -->
     <nav class="navbar">
       <!-- Reference: https://www.gethalfmoon.com/docs/navbar -->
+        <a href="#" class="navbar-brand">
+          sigcoder - sigma into anything
+        </a>
     </nav>
     <!-- Navbar end -->
 
     <!-- Content wrapper start -->
     <div class="content-wrapper">
       <div class="container-fluid font-size-12">
-        <div class="row row-eq-spacing justify-content-center">
-          <div class="col-6 justify-content-center">
-            <textarea style="overflow-y:hidden" class="prism-live line-numbers language-yml fill" spellcheck="false"></textarea>
+        <!-- Inputs -->
+        <div id="inputs" class="row row-eq-spacing">
+          <!-- Pipelines: sigma list pipelines -->
+          <div class="col-sm-12 col-lg-3">
+            <label for="pipeline-select">Select pipeline:</label>
+            <select class="form-control" id="pipeline-select">
+              <option value="sysmon">Generic Log Sources to Sysmon Transformation</option>
+              <option value="crowdstrike_fdr">Generic Log Sources to CrowdStrike Falcon Data Replicator (FDR) Transformation</option>
+            </select>
           </div>
-          <div class="col-6 justify-content-center">
-            <textarea style="overflow:hidden; white-space: pre-wrap" readonly class="prism-live language-splunk-spl fill" spellcheck="false">(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" AND EventCode="15" AND  NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image</textarea>
+          <!-- Targets: sigma list targets -->
+          <div class="col-sm-12 col-lg-3">
+            <label for="target-select">Select backend:</label>
+            <select class="form-control" id="target-select">
+              <option value="splunk">Splunk</option>
+              <option value="insightidr">Rapid7 InsightIDR</option>
+            </select>
+          </div>
+          <!-- Format: sigma list format <backend> -->
+          <div class="col-sm-12 col-lg-3">
+            <label for="format-select">Select format:</label>
+            <select class="form-control" id="format-select">
+              <option value="default">Default</option>
+            </select>
+          </div>
+          <!-- Convert Button -->
+          <div class="col-sm-12 col-lg-3 d-flex justify-content-end align-self-center">
+            <button id="convert-button" class="btn btn-rounded btn-primary mt-15" type="button">Convert ></button>
+          </div>
+        </div>
+        <!-- Code Area -->
+        <div class="row row-eq-spacing justify-content-center">
+          <div class="col-sm-12 col-lg-6 justify-content-center">
+            <textarea class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false"></textarea>
+          </div>
+          <div class="col-sm-12 col-lg-6 justify-content-center">
+            <textarea style="white-space: pre-wrap" readonly class="prism-live language-splunk-spl fill overflow-hidden" spellcheck="false">(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" AND EventCode="15" AND  NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image</textarea>
           </div>
         </div>
       </div>

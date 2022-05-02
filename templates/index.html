@@ -70,7 +70,7 @@
           </div>
           <!-- Convert Button -->
           <div class="col-sm-12 col-lg-3 d-flex justify-content-end align-self-center">
-            <button id="convert-button" class="btn btn-rounded btn-primary mt-15" type="button">Convert ></button>
+            <button onclick="convert()" id="convert-button" class="btn btn-rounded btn-primary mt-15" type="button">Convert ></button>
           </div>
         </div>
         <!-- Code Area -->
@@ -79,7 +79,7 @@
             <textarea class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false"></textarea>
           </div>
           <div class="col-sm-12 col-lg-6 justify-content-center">
-            <textarea style="white-space: pre-wrap" readonly class="prism-live language-splunk-spl fill overflow-hidden" spellcheck="false">(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" AND EventCode="15" AND  NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image</textarea>
+            <pre style="white-space: pre-wrap" class="prism-live language-splunk-spl fill overflow-hidden"><code id="result-codebox">(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" AND EventCode="15" AND  NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image</code></pre>
           </div>
         </div>
       </div>

@@ -24,3 +24,17 @@ $$("textarea.language-js.fill").forEach(t => {
 
 
 })(Bliss, Bliss.$);
+
+const sleep = (duration) => {
+    return new Promise(resolve => setTimeout(resolve, duration));
+}
+
+const convert = async () => {
+	let resultCodebox = document.getElementById('result-codebox');
+  for(count = 0; count < 13; count++) {
+    dots = count % 3 + 1
+    resultCodebox.innerHTML = "Converting" + ".".repeat(dots)
+    await sleep(500)
+  }
+  Prism.highlightAll();
+}

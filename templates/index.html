@@ -46,23 +46,26 @@
           <div class="col-sm-12 col-lg-3">
             <label for="pipeline-select">Select pipeline:</label>
             <select class="form-control" id="pipeline-select">
-              <option value="sysmon">Generic Log Sources to Sysmon Transformation</option>
-              <option value="crowdstrike_fdr">Generic Log Sources to CrowdStrike Falcon Data Replicator (FDR) Transformation</option>
+              <option selected value></option>
+              {% for name in pipelines.pipelines.keys() %}
+              <option value="{{ name }}">{{ name }}</option>
+              {% endfor %}
             </select>
           </div>
           <!-- Targets: sigma list targets -->
           <div class="col-sm-12 col-lg-3">
             <label for="target-select">Select backend:</label>
             <select class="form-control" id="target-select">
-              <option value="splunk">Splunk</option>
-              <option value="insightidr">Rapid7 InsightIDR</option>
+              {% for name, backend in backends.items() %}
+              <option value="{{ name }}">{{ backend.text }}</option>
+              {% endfor %}
             </select>
           </div>
           <!-- Format: sigma list format <backend> -->
           <div class="col-sm-12 col-lg-3">
             <label for="format-select">Select format:</label>
             <select class="form-control" id="format-select">
-              <option value="default">Default</option>
+              <option selected value="default">Default</option>
             </select>
           </div>
           <!-- Convert Button -->

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta name="viewport" content="width=device-width" />
+
+  <!-- Favicon and title -->
+  <link rel="icon" href="path/to/fav.png">
+  <title>Starter template - Halfmoon</title>
+
+  <!-- Halfmoon CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.1.1/css/halfmoon.min.css" integrity="sha512-Kaju/JzlErKhC47smofkXAdSkvILovmvh2nnok6rgN79oB3Co/T7Pm7Ns8dcpNEN3VTVZDw2ilrUDByzInEabg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<!-- Prism CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-atom-dark.min.css" integrity="sha512-GZPS1oCebjx8g/ZkrTTvWirW+4wDkzIsilUQPXcZzuDpDzoH5brM2AojiFjo6ObIWeM68ZDostvdjaS9MNYCTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<!-- Prism Live CSS -->
+	<link rel="stylesheet" href="css/prism-live.css">
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true"> <!--  data-dm-shortcut-enabled="true" data-set-preferred-mode-onload="true">-->
+  <!-- Modals go here -->
+  <!-- Reference: https://www.gethalfmoon.com/docs/modal -->
+
+  <!-- Page wrapper start -->
+  <div class="page-wrapper with-navbar">
+
+    <!-- Navbar start -->
+    <nav class="navbar">
+      <!-- Reference: https://www.gethalfmoon.com/docs/navbar -->
+    </nav>
+    <!-- Navbar end -->
+
+    <!-- Content wrapper start -->
+    <div class="content-wrapper">
+      <div class="container-fluid font-size-12">
+        <div class="row row-eq-spacing justify-content-center">
+          <div class="col-6 justify-content-center">
+            <textarea style="overflow-y:hidden" class="prism-live line-numbers language-yml fill" spellcheck="false"></textarea>
+          </div>
+          <div class="col-6 justify-content-center">
+            <textarea style="overflow:hidden; white-space: pre-wrap" readonly class="prism-live language-splunk-spl fill" spellcheck="false">(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" AND EventCode="15" AND  NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Content wrapper end -->
+
+  </div>
+  <!-- Page wrapper end -->
+
+	<!-- Halfmoon JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.1.1/js/halfmoon.min.js" integrity="sha512-8fN/MQrHBCMmkx2t4QwGODGHwQf8VxCeNwNkJz0gjt5JrlUfJ5zNlMr9lrzhnl7DSN+5E16YmMHnfomnQmvSoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- PrismJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blissfuljs/1.0.6/bliss.shy.min.js" integrity="sha512-MxBdQXQ8H/eviAINQi9I3C5hl/mG7hbiB5KEAUdKcr0CVJpjmyXNyRSh4wIzX3/5oHK8L1B8svUuKXWu70RAVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js" integrity="sha512-RDQSW3KoqJMiX0L/UBgwBmH1EmRYp8LBOiLaA8rBHIy+7OGP/7Gxg8vbt8wG4ZYd29P0Fnoq6+LOytCqx3cyoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-BttltKXFyWnGZQcRWj6osIg7lbizJchuAMotOkdLxHxwt/Hyo+cl47bZU0QADg+Qt5DJwni3SbYGXeGMB5cBcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-yaml.min.js" integrity="sha512-6O/PZimM3TD1NN3yrazePA4AbZrPcwt1QCGJrVY7WoHDJROZFc9TlBvIKMe+QfqgcslW4lQeBzNJEJvIMC8WhA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-splunk-spl.min.js" integrity="sha512-RLhcqVEXOdbZPCJ8YG5fZDRIK3nXiS6erMtnzLyaKzS17H7mRi/9a1o+s2TM2XlWk4Nk7E579LyL63R7nUlrgQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- PrismLiveJS -->
+  <script src="js/prism-live.js"></script>
+  <script src="js/prism-live-markup.js"></script>
+  <script src="js/prism-live-css.js"></script>
+  <script src="js/prism-live-javascript.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

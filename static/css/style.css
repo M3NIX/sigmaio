@@ -1,9 +1,22 @@
+/* some css fixes to enable word wrapping */
+
 textarea[class*="language-"],
 code[class*="language-"],
 code[class*="language-"] *,
 pre[class*="language-"] {
   word-break: break-word !important;
   white-space: pre-wrap !important;
+}
+
+div[class*="prism-live"] {
+  cursor: text;
+}
+
+code[class*="language-"]::selection,
+pre[class*="prism-live"]::selection,
+code[class*="language-"] span::selection {
+  background: hsl(320, 80%, 25%);
+  color: hsla(0, 0%, 100%, .8);
 }
 
 .font-size-10 {

@@ -21,9 +21,8 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
-<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true"> <!--  data-dm-shortcut-enabled="true" data-set-preferred-mode-onload="true">-->
-  <!-- Modals go here -->
-  <!-- Reference: https://www.gethalfmoon.com/docs/modal -->
+<body onload="showFormats()" class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true"> <!--  data-dm-shortcut-enabled="true" data-set-preferred-mode-onload="true">-->
+  <div class="sticky-alerts"></div>
 
   <!-- Page wrapper start -->
   <div class="page-wrapper with-navbar">
@@ -39,13 +38,13 @@
 
     <!-- Content wrapper start -->
     <div class="content-wrapper">
-      <div class="container-fluid font-size-12">
+      <div class="container-fluid font-size-10">
         <!-- Inputs -->
         <div id="inputs" class="row row-eq-spacing">
           <!-- Pipelines: sigma list pipelines -->
           <div class="col-sm-12 col-lg-3">
             <label for="pipeline-select">Select pipeline:</label>
-            <select class="form-control" id="pipeline-select">
+            <select onchange="convert()" class="form-control" id="pipeline-select">
               <option selected value></option>
               {% for name in pipelines.pipelines.keys() %}
               <option value="{{ name }}">{{ name }}</option>
@@ -55,7 +54,7 @@
           <!-- Targets: sigma list targets -->
           <div class="col-sm-12 col-lg-3">
             <label for="target-select">Select backend:</label>
-            <select onLoad="showFormats()" onChange="showFormats()" class="form-control" id="target-select">
+            <select onchange="showFormats(); convert()" class="form-control" id="target-select">
               {% for name, backend in backends.items() %}
               <option value="{{ name }}">{{ backend.text }}</option>
               {% endfor %}
@@ -64,24 +63,103 @@
           <!-- Format: sigma list format <backend> -->
           <div class="col-sm-12 col-lg-3">
             <label for="format-select">Select format:</label>
-            <select class="form-control" id="format-select">
+            <select onchange="convert()" class="form-control" id="format-select">
               {% for format in formats %}
               <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
               {% endfor %}
             </select>
           </div>
+          <!-- Copy Button -->
+          <div class="col-sm-6 col-lg-1 offset-lg-1 d-flex justify-content-end align-self-center">
+            <button onclick="copy()" id="copy-button" class="btn btn-rounded btn-primary mt-15" type="button">Copy</button>
+          </div>
           <!-- Convert Button -->
-          <div class="col-sm-12 col-lg-3 d-flex justify-content-end align-self-center">
+          <div class="col-sm-6 col-lg-1 d-flex justify-content-end align-self-center">
             <button onclick="convert()" id="convert-button" class="btn btn-rounded btn-primary mt-15" type="button">Convert ></button>
           </div>
         </div>
         <!-- Code Area -->
         <div class="row row-eq-spacing justify-content-center">
           <div class="col-sm-12 col-lg-6 justify-content-center">
-            <textarea class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false">---&#13;&#10;</textarea>
+            <textarea id="input-textarea" class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false">
+title: Suspicious SYSTEM User Process Creation
+id: 2617e7ed-adb7-40ba-b0f3-8f9945fe6c09
+status: test
+description: Detects a suspicious process creation as SYSTEM user (suspicious program or command line parameter)
+references:
+    - Internal Research
+    - https://tools.thehacker.recipes/mimikatz/modules
+author: Florian Roth (rule), David ANDRE (additional keywords)
+date: 2021/12/20
+modified: 2022/04/27
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        IntegrityLevel: System
+        User|contains: # covers many language settings
+            - 'AUTHORI'
+            - 'AUTORI'
+    selection_special:
+        - Image|endswith:
+            - '\calc.exe'
+            - '\wscript.exe'
+            - '\cscript.exe'
+            - '\hh.exe'
+            - '\mshta.exe'
+            - '\forfiles.exe'
+            - '\ping.exe'
+        - CommandLine|contains:
+            # - 'sc stop ' # stops a system service # causes FPs
+            - ' -NoP '  # Often used in malicious PowerShell commands
+            - ' -W Hidden '  # Often used in malicious PowerShell commands
+            - ' -decode '  # Used with certutil
+            - ' /decode '  # Used with certutil
+            - ' /urlcache '  # Used with certutil
+            - ' -urlcache '  # Used with certutil
+            - ' -e* JAB'  # PowerShell encoded commands
+            - ' -e* SUVYI'  # PowerShell encoded commands
+            - ' -e* SQBFAFgA'  # PowerShell encoded commands
+            - ' -e* aWV4I'  # PowerShell encoded commands
+            - ' -e* IAB'  # PowerShell ncoded commands
+            - ' -e* PAA'  # PowerShell encoded commands
+            - ' -e* aQBlAHgA'  # PowerShell encoded commands
+            - 'vssadmin delete shadows'  # Ransomware
+            - 'reg SAVE HKLM'  # save registry SAM - syskey extraction
+            - ' -ma '  # ProcDump
+            - 'Microsoft\Windows\CurrentVersion\Run'  # Run key in command line - often in combination with REG ADD
+            - '.downloadstring('  # PowerShell download command
+            - '.downloadfile('  # PowerShell download command
+            - ' /ticket:'  # Rubeus
+            - 'dpapi::'     #Mimikatz
+            - 'event::clear'        #Mimikatz
+            - 'event::drop'     #Mimikatz
+            - 'id::modify'      #Mimikatz
+            - 'kerberos::'       #Mimikatz
+            - 'lsadump::'      #Mimikatz
+            - 'misc::'     #Mimikatz
+            - 'privilege::'       #Mimikatz
+            - 'rpc::'      #Mimikatz
+            - 'sekurlsa::'       #Mimikatz
+            - 'sid::'        #Mimikatz
+            - 'token::'      #Mimikatz
+            - 'vault::cred'     #Mimikatz
+            - 'vault::list'     #Mimikatz
+            - ' p::d '  # Mimikatz
+            - ';iex('  # PowerShell IEX
+            - 'MiniDump'  # Process dumping method apart from procdump
+            - 'net user '
+    condition: all of selection*
+falsepositives:
+    - Administrative activity
+    - Scripts and administrative tools used in the monitored environment
+    - Monitoring activity
+level: high
+            </textarea>
           </div>
           <div class="col-sm-12 col-lg-6 justify-content-center">
-            <textarea id="result-textarea" style="white-space: pre-wrap" class="prism-live language-splunk-spl fill overflow-hidden" spellcheck="false" disabled>Output will be displayed here</textarea>
+            <textarea id="result-textarea" class="prism-live line-numbers language-splunk-spl fill overflow-y-hidden" spellcheck="false" disabled>Output will be displayed here</textarea>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 # sigcoder
 
 Inspired by [uncoder.io](https://uncoder.io) I wrote my own implementation using the new [pySigma](https://github.com/SigmaHQ/pySigma) library.
+A demo instance is running at https://sigcoder.herokuapp.com/
 
 ## Getting started
 

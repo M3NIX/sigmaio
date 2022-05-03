@@ -1,4 +1,11 @@
-code[class*="language-splunk-spl"], pre[class*="language-splunk-spl"] {
-  white-space: normal !important;
+textarea[class*="language-"],
+code[class*="language-"],
+code[class*="language-"] *,
+pre[class*="language-"] {
   word-break: break-word !important;
+  white-space: pre-wrap !important;
+}
+
+.font-size-10 {
+    font-size: 1.0rem !important;
 }

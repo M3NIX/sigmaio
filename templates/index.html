@@ -55,7 +55,7 @@
           <!-- Targets: sigma list targets -->
           <div class="col-sm-12 col-lg-3">
             <label for="target-select">Select backend:</label>
-            <select class="form-control" id="target-select">
+            <select onLoad="showFormats()" onChange="showFormats()" class="form-control" id="target-select">
               {% for name, backend in backends.items() %}
               <option value="{{ name }}">{{ backend.text }}</option>
               {% endfor %}
@@ -65,7 +65,9 @@
           <div class="col-sm-12 col-lg-3">
             <label for="format-select">Select format:</label>
             <select class="form-control" id="format-select">
-              <option selected value="default">Default</option>
+              {% for format in formats %}
+              <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
+              {% endfor %}
             </select>
           </div>
           <!-- Convert Button -->
@@ -76,10 +78,10 @@
         <!-- Code Area -->
         <div class="row row-eq-spacing justify-content-center">
           <div class="col-sm-12 col-lg-6 justify-content-center">
-            <textarea class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false"></textarea>
+            <textarea class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false">---&#13;&#10;</textarea>
           </div>
           <div class="col-sm-12 col-lg-6 justify-content-center">
-            <pre style="white-space: pre-wrap" class="prism-live language-splunk-spl fill overflow-hidden"><code id="result-codebox">(source="WinEventLog:Microsoft-Windows-Sysmon/Operational" AND EventCode="15" AND  NOT (Imphash="00000000000000000000000000000000")) | table TargetFilename,Image</code></pre>
+            <textarea id="result-textarea" style="white-space: pre-wrap" class="prism-live language-splunk-spl fill overflow-hidden" spellcheck="false" disabled>Output will be displayed here</textarea>
           </div>
         </div>
       </div>

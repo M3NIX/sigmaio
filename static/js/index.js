@@ -25,16 +25,46 @@ $$("textarea.language-js.fill").forEach(t => {
 
 })(Bliss, Bliss.$);
 
-const sleep = (duration) => {
-    return new Promise(resolve => setTimeout(resolve, duration));
+const showFormats = () => {
+	let backendSelect = document.getElementById('target-select');
+	let formatSelect = document.getElementById('format-select');
+  let backend = backendSelect.value
+
+  let formatOptions = [...formatSelect.children]
+  isFirstSelected = false
+  formatOptions.forEach(option => {
+    if(option.getAttribute("backend") === backend ){
+      option.hidden = false
+      if(!isFirstSelected){
+        option.selected = true
+        isFirstSelected = true
+      }
+    }
+    else {
+      option.hidden = true
+    }
+  });
+
 }
 
-const convert = async () => {
-	let resultCodebox = document.getElementById('result-codebox');
-  for(count = 0; count < 13; count++) {
-    dots = count % 3 + 1
+const convert = () => {
+	let resultCodebox = document.getElementById('result-textarea').previousElementSibling.firstChild;
+  let count = 0
+  loadingAnimation = setInterval(function () {
+    dots = count % 4
     resultCodebox.innerHTML = "Converting" + ".".repeat(dots)
-    await sleep(500)
+    count++
+  }, 500);
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function(e) {
+    if(xhr.readyState === 4){
+      if(xhr.status === 200 ){
+        clearInterval(loadingAnimation);
+        resultCodebox.innerHTML = xhr.response
+        Prism.highlightElement(resultCodebox);
+      }
+    }
   }
-  Prism.highlightAll();
+  xhr.open("post", "http://localhost:8000/sigma", true)
+  xhr.send();
 }

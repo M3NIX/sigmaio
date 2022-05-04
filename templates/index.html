@@ -9,7 +9,7 @@
 
   <!-- Favicon and title -->
   <link rel="icon" href="{{ url_for('static', filename='fav.png') }}">
-  <title>sigcoder - sigma to anything</title>
+  <title>sigcoder - sigma into anything</title>
 
   <!-- Halfmoon CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.1.1/css/halfmoon.min.css" integrity="sha512-Kaju/JzlErKhC47smofkXAdSkvILovmvh2nnok6rgN79oB3Co/T7Pm7Ns8dcpNEN3VTVZDw2ilrUDByzInEabg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
-<body onload="showFormats()" class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true"> <!--  data-dm-shortcut-enabled="true" data-set-preferred-mode-onload="true">-->
+<body onload="showFormats(); cli()" class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true">
   <div class="sticky-alerts"></div>
 
   <!-- Page wrapper start -->
@@ -40,11 +40,11 @@
     <div class="content-wrapper">
       <div class="container-fluid font-size-10">
         <!-- Inputs -->
-        <div id="inputs" class="row row-eq-spacing">
+        <div id="inputs" class="row row-eq-spacing align-items-end">
           <!-- Pipelines: sigma list pipelines -->
-          <div class="col-sm-12 col-lg-3">
+          <div class="col-sm-12 col-lg-2">
             <label for="pipeline-select">Select pipeline:</label>
-            <select onchange="convert()" class="form-control" id="pipeline-select">
+            <select onchange="convert(); cli()" class="form-control" id="pipeline-select">
               <option selected value></option>
               {% for name in pipelines.pipelines.keys() %}
               <option value="{{ name }}">{{ name }}</option>
@@ -52,30 +52,39 @@
             </select>
           </div>
           <!-- Targets: sigma list targets -->
-          <div class="col-sm-12 col-lg-3">
+          <div class="col-sm-12 col-lg-2">
             <label for="target-select">Select backend:</label>
-            <select onchange="showFormats(); convert()" class="form-control" id="target-select">
+            <select onchange="showFormats(); convert(); cli()" class="form-control" id="target-select">
               {% for name, backend in backends.items() %}
               <option value="{{ name }}">{{ backend.text }}</option>
               {% endfor %}
             </select>
           </div>
           <!-- Format: sigma list format <backend> -->
-          <div class="col-sm-12 col-lg-3">
+          <div class="col-sm-12 col-lg-2">
             <label for="format-select">Select format:</label>
-            <select onchange="convert()" class="form-control" id="format-select">
+            <select onchange="convert(); cli()" class="form-control" id="format-select">
               {% for format in formats %}
               <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
               {% endfor %}
             </select>
           </div>
-          <!-- Copy Button -->
-          <div class="col-sm-6 col-lg-1 offset-lg-1 d-flex justify-content-end align-self-center">
-            <button onclick="copy()" id="copy-button" class="btn btn-rounded btn-primary mt-15" type="button">Copy</button>
+          <!-- CLI -->
+          <div class="col-sm-12 col-lg-4">
+            <pre style="margin: 0"><code id="cli-code" class="language-bash"></code></pre>
           </div>
-          <!-- Convert Button -->
-          <div class="col-sm-6 col-lg-1 d-flex justify-content-end align-self-center">
-            <button onclick="convert()" id="convert-button" class="btn btn-rounded btn-primary mt-15" type="button">Convert ></button>
+          <!-- Buttons -->
+          <div class="col-sm-12 col-lg-2">
+            <div class="row justify-content-end">
+              <!-- Copy Button -->
+              <div class="col-4">
+                <button onclick="copy()" id="copy-button" class="btn btn-rounded btn-primary" type="button">Copy</button>
+              </div>
+              <!-- Convert Button -->
+              <div class="col-4">
+                <button onclick="convert()" id="convert-button" class="btn btn-rounded btn-primary" type="button">Convert</button>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Code Area -->
@@ -159,7 +168,7 @@ level: high
             </textarea>
           </div>
           <div class="col-sm-12 col-lg-6 justify-content-center">
-            <textarea hidden id="result-textarea" class="prism-live line-numbers language-splunk-spl fill overflow-y-hidden" spellcheck="false" disabled>Output will be displayed here</textarea>
+            <pre><code id="result-code" class="line-numbers language-splunk-spl overflow-y-hidden fill">Output will be displayed here</code></pre>
           </div>
         </div>
       </div>
@@ -177,6 +186,7 @@ level: high
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-BttltKXFyWnGZQcRWj6osIg7lbizJchuAMotOkdLxHxwt/Hyo+cl47bZU0QADg+Qt5DJwni3SbYGXeGMB5cBcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-yaml.min.js" integrity="sha512-6O/PZimM3TD1NN3yrazePA4AbZrPcwt1QCGJrVY7WoHDJROZFc9TlBvIKMe+QfqgcslW4lQeBzNJEJvIMC8WhA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-splunk-spl.min.js" integrity="sha512-RLhcqVEXOdbZPCJ8YG5fZDRIK3nXiS6erMtnzLyaKzS17H7mRi/9a1o+s2TM2XlWk4Nk7E579LyL63R7nUlrgQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-bash.min.js" integrity="sha512-ZqfG//sXQwAA7DOArFJyMmZQ3knKe+0ft3tPQZPvDPJR04IatmhVO5pTazVV+fLVDYSy28PhoBeUj5wxGRiGAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<!-- PrismLiveJS -->
   <script src="{{ url_for('static', filename='js/prism-live.js') }}"></script>
   <script src="{{ url_for('static', filename='js/prism-live-markup.js') }}"></script>

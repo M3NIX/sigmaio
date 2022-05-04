@@ -8,10 +8,6 @@ pre[class*="language-"] {
   white-space: pre-wrap !important;
 }
 
-div[class*="prism-live"] {
-  cursor: text;
-}
-
 code[class*="language-"]::selection,
 pre[class*="prism-live"]::selection,
 code[class*="language-"] span::selection {

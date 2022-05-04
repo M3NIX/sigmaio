@@ -27,10 +27,8 @@ $$("textarea.language-js.fill").forEach(t => {
 
 function copy() {
 
-  let resultTextarea = document.getElementById('result-textarea');
-  resultTextarea.select();
-  resultTextarea.setSelectionRange(0, 99999); /* For mobile devices */
-  navigator.clipboard.writeText(resultTextarea.value);
+  let resultCode = document.getElementById('result-code');
+  navigator.clipboard.writeText(resultCode.value);
 
   halfmoon.initStickyAlert({
     content: "It is in your clipboard",
@@ -62,10 +60,25 @@ const showFormats = () => {
 
 }
 
+const cli = () => {
+  let cliCode = document.getElementById('cli-code');
+  let pipeline = document.getElementById('pipeline-select').value
+  let target = document.getElementById('target-select').value
+  let format = document.getElementById('format-select').value
+
+  if (!pipeline){
+    console.log(pipeline)
+    cliCode.innerHTML = "sigma convert -t " + target + " -f " + format + " rule.yml"
+  }
+  else {
+    cliCode.innerHTML = "sigma convert -p " + pipeline + " -t " + target + " -f " + format + " rule.yml"
+  }
+  Prism.highlightElement(cliCode); // rerun code highlighting
+}
+
 const convert = () => {
 
-  let resultTextarea = document.getElementById('result-textarea');
-  let resultCodebox = resultTextarea.previousElementSibling.firstChild;
+  let resultCode = document.getElementById('result-code');
 
   // start loading animation
   let count = 0
@@ -97,15 +110,13 @@ const convert = () => {
       if(xhr.status === 200 ){
         clearInterval(loadingAnimation); // stop loading Animation
         // write converted querie to output
-        resultTextarea.innerHTML = xhr.response
-        resultCodebox.innerHTML = xhr.response
-        Prism.highlightElement(resultCodebox); // rerun code highlighting
+        resultCode.innerHTML = xhr.response
+        resultCode.value = xhr.response
+        Prism.highlightElement(resultCode); // rerun code highlighting
       }
       else if(xhr.status === 500){
         clearInterval(loadingAnimation); // stop loading Animation
-        let errorMsg = "Error: Something went wrong"
-        resultTextarea.innerHTML = errorMsg
-        resultCodebox.innerHTML = errorMsg
+        resultCode.innerHTML = "Error: Something went wrong"
       }
     }
   }

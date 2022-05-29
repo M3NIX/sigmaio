@@ -28,7 +28,8 @@ def convert():
     rule = str(base64.b64decode(request.json['rule']), "utf-8")
     pipeline = []
     if request.json['pipeline']:
-        pipeline.append(request.json['pipeline'])
+        for p in request.json['pipeline']:
+            pipeline.append(p)
     target = request.json['target']
     format = request.json['format']
 

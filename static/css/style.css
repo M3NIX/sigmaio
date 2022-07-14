@@ -18,3 +18,39 @@ code[class*="language-"] span::selection {
 .font-size-10 {
     font-size: 1.0rem !important;
 }
+
+.row {
+  padding-left: 3% !important;
+  padding-right: 3% !important;
+}
+
+/* dark mode */
+.dark-mode {
+  background-color: #25282c;
+  color: rgba(255,255,255,.8);
+}
+
+.dark-mode .ui.selection.dropdown,
+.dark-mode .ui.selection.dropdown:hover,
+.dark-mode .ui.selection.active.dropdown .menu,
+.dark-mode .ui.selection.active.dropdown:hover .menu,
+.dark-mode .ui.selection.active.visible.dropdown,
+.dark-mode .ui.selection.active.visible.dropdown:hover {
+  border-color: rgba(255,255,255,.8);
+}
+
+.dark-mode .ui.selection.dropdown, .dark-mode .ui.selection.active.dropdown > div.text {
+  color: rgba(255,255,255,.8);
+  background-color: rgba(255,255,255,.05);
+  border-color: #25282c;
+}
+
+.dark-mode .ui.selection.active.dropdown div.item {
+  color: rgba(255,255,255,.8);
+  background-color: #1d1f21;
+  border-color: #25282c;
+}
+
+.dark-mode .ui.form .field>label{
+  color: rgba(255,255,255,.8);
+}

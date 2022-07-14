@@ -11,8 +11,8 @@
   <link rel="icon" href="{{ url_for('static', filename='fav.png') }}">
   <title>sigmaio - sigma in, anything out</title>
 
-  <!-- Halfmoon CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.1.1/css/halfmoon.min.css" integrity="sha512-Kaju/JzlErKhC47smofkXAdSkvILovmvh2nnok6rgN79oB3Co/T7Pm7Ns8dcpNEN3VTVZDw2ilrUDByzInEabg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Semantic UI-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- Prism CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-atom-dark.min.css" integrity="sha512-GZPS1oCebjx8g/ZkrTTvWirW+4wDkzIsilUQPXcZzuDpDzoH5brM2AojiFjo6ObIWeM68ZDostvdjaS9MNYCTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,79 +21,78 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
-<body onload="showFormats(); cli()" class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true">
-  <div class="sticky-alerts"></div>
+<body onload="showFormats(); cli()" class="dark-mode">
 
-  <!-- Page wrapper start -->
-  <div class="page-wrapper with-navbar">
+  <nav style="padding: 20px 3% 30px 3%;">
+    <div class="ui grid bottom aligned">
+      <div class="ten wide computer only tablet only column">
+        <h1>sigmaio - sigma in, anything out</h1>
+      </div>
+      <div class="ten wide mobile only column">
+        <h1>sigmaio</h1>
+      </div>
+      <div class="six wide column right aligned">
+        <h3><a href="https://github.com/M3NIX/sigmaio">See on GitHub</a></h3>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Navbar start -->
-    <nav class="navbar">
-      <!-- Reference: https://www.gethalfmoon.com/docs/navbar -->
-        <p class="navbar-brand">
-          sigmaio - sigma in, anything out
-        </p>
-        <div class="navbar-content ml-auto">
-            <a href="https://github.com/M3NIX/sigmaio">See on GitHub</a>
-        </div>
-    </nav>
-    <!-- Navbar end -->
-
-    <!-- Content wrapper start -->
-    <div class="content-wrapper">
-      <div class="container-fluid font-size-10">
-        <!-- Inputs -->
-        <div id="inputs" class="row row-eq-spacing align-items-end">
-          <!-- Pipelines: sigma list pipelines -->
-          <div class="col-sm-12 col-lg-2">
-            <label for="pipeline-select">Select pipeline:</label>
-            <select onchange="convert(); cli()" class="form-control" id="pipeline-select">
-              <option selected value></option>
-              {% for name in pipelines.pipelines.keys() %}
-              <option value="{{ name }}">{{ name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <!-- Targets: sigma list targets -->
-          <div class="col-sm-12 col-lg-2">
-            <label for="target-select">Select backend:</label>
-            <select onchange="showFormats(); convert(); cli()" class="form-control" id="target-select">
-              {% for name, backend in backends.items() %}
-              <option value="{{ name }}">{{ backend.text }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <!-- Format: sigma list format <backend> -->
-          <div class="col-sm-12 col-lg-2">
-            <label for="format-select">Select format:</label>
-            <select onchange="convert(); cli()" class="form-control" id="format-select">
-              {% for format in formats %}
-              <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <!-- CLI -->
-          <div class="col-sm-12 col-lg-4">
-            <pre style="margin: 0"><code id="cli-code" class="language-bash"></code></pre>
-          </div>
-          <!-- Buttons -->
-          <div class="col-sm-12 col-lg-2">
-            <div class="row justify-content-end">
-              <!-- Copy Button -->
-              <div class="col-4">
-                <button onclick="copy()" id="copy-button" class="btn btn-rounded btn-primary" type="button">Copy</button>
-              </div>
-              <!-- Convert Button -->
-              <div class="col-4">
-                <button onclick="convert()" id="convert-button" class="btn btn-rounded btn-primary" type="button">Convert</button>
-              </div>
+  <div class="ui inverted two column grid vertically divided stackable">
+    <!-- Forms -->
+    <div class="row">
+      <div class="column">
+        <div class="ui form large">
+          <div class="three fields">
+            <!-- Pipeline Select -->
+            <div class="field">
+              <label>Select pipeline(s): </label>
+              <select id="pipeline-select" onchange="convert(); cli()" multiple="" class="ui selection dropdown">
+                <option value></option>
+                <option value=""></option>
+                {% for name in pipelines.pipelines.keys() %}
+                <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- Backend Select -->
+            <div class="field">
+              <label>Select backend:</label>
+              <select id="target-select" onchange="showFormats(); convert(); cli()" class="ui selection dropdown">
+                {% for name, backend in backends.items() %}
+                <option value="{{ name }}">{{ backend.text }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- Output Format Select -->
+            <div class="field">
+              <label>Select output format:</label>
+              <select id="format-select" onchange="convert(); cli()" class="ui selection dropdown">
+                {% for format in formats %}
+                <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
+                {% endfor %}
+              </select>
             </div>
           </div>
         </div>
-        <!-- Code Area -->
-        <div class="row row-eq-spacing justify-content-center">
-          <div class="col-sm-12 col-lg-6 justify-content-center">
-            <textarea id="input-textarea" class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false">
+      </div>
+      <div class="column">
+        <div class="ui grid padded stackable">
+          <div class="ten wide column">
+             <pre style="margin: 0; margin-top: 5px;"><code id="cli-code" class="language-bash"></code></pre>
+          </div>
+          <div class="four wide column right floated">
+            <div style="margin-top: 10px;" class="ui buttons">
+              <button id="convert-button" onclick="convert()" class="ui blue button">Convert</button>
+              <button id="copy-button" onclick="copy()" class="ui button">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>   
+    <!-- Code Input and Output -->
+    <div class="row">
+      <div class="column">
+        <textarea id="input-textarea" class="prism-live line-numbers language-yml fill overflow-y-hidden" spellcheck="false">
 title: Suspicious SYSTEM User Process Creation
 id: 2617e7ed-adb7-40ba-b0f3-8f9945fe6c09
 status: test
@@ -168,21 +167,18 @@ falsepositives:
     - Scripts and administrative tools used in the monitored environment
     - Monitoring activity
 level: high
-            </textarea>
-          </div>
-          <div class="col-sm-12 col-lg-6 justify-content-center">
-            <pre><code id="result-code" class="line-numbers language-splunk-spl overflow-y-hidden fill">Output will be displayed here</code></pre>
-          </div>
-        </div>
+        </textarea>
+      </div>
+      <div class="column">
+         <pre><code id="result-code" class="line-numbers language-splunk-spl overflow-y-hidden fill">Output will be displayed here</code></pre>
       </div>
     </div>
-    <!-- Content wrapper end -->
-
   </div>
-  <!-- Page wrapper end -->
+ 
 
-	<!-- Halfmoon JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.1.1/js/halfmoon.min.js" integrity="sha512-8fN/MQrHBCMmkx2t4QwGODGHwQf8VxCeNwNkJz0gjt5JrlUfJ5zNlMr9lrzhnl7DSN+5E16YmMHnfomnQmvSoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- Semantic UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<!-- PrismJS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/blissfuljs/1.0.6/bliss.shy.min.js" integrity="sha512-MxBdQXQ8H/eviAINQi9I3C5hl/mG7hbiB5KEAUdKcr0CVJpjmyXNyRSh4wIzX3/5oHK8L1B8svUuKXWu70RAVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js" integrity="sha512-RDQSW3KoqJMiX0L/UBgwBmH1EmRYp8LBOiLaA8rBHIy+7OGP/7Gxg8vbt8wG4ZYd29P0Fnoq6+LOytCqx3cyoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -196,5 +192,15 @@ level: high
   <script src="{{ url_for('static', filename='js/prism-live-css.js') }}"></script>
   <script src="{{ url_for('static', filename='js/prism-live-javascript.js') }}"></script>
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script>
+    $(document)
+      .ready(function() {
+        $('.ui.selection.dropdown').dropdown();
+        $('.ui.menu .ui.dropdown').dropdown({
+          on: 'hover'
+        });
+      })
+    ;
+  </script>
 </body>
 </html>

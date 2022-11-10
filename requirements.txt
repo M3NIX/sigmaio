@@ -1,2 +1,2 @@
 flask==2.2.2
-sigma-cli==0.4.9
+sigma-cli==0.5.3

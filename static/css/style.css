@@ -9,7 +9,6 @@ pre[class*="language-"] {
 }
 
 code[class*="language-"]::selection,
-pre[class*="prism-live"]::selection,
 code[class*="language-"] span::selection {
   background: hsl(320, 80%, 25%);
   color: hsla(0, 0%, 100%, .8);
@@ -53,4 +52,9 @@ code[class*="language-"] span::selection {
 
 .dark-mode .ui.form .field>label{
   color: rgba(255,255,255,.8);
+}
+
+pre[class*=language-] {
+  min-height: 49px;
+  cursor: text;
 }

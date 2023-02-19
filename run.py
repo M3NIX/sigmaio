@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import yaml
 import base64
 from flask import Flask, render_template, request
 
@@ -26,6 +27,13 @@ def convert():
 
     # get params from request
     rule = str(base64.b64decode(request.json['rule']), "utf-8")
+    # check if input is valid yaml
+    try:
+        yaml.safe_load(rule)
+    except:
+        print("error")
+        return ("Error: No valid yaml input")
+
     pipeline = []
     if request.json['pipeline']:
         for p in request.json['pipeline']:

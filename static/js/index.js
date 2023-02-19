@@ -1,30 +1,3 @@
-/*
- * JS for Prism Live’s page, not part of the actual editor
- */
-
-(async function($, $$) {
-
-$$("textarea.language-html.fill").forEach(t => t.value = document.head.outerHTML);
-
-var css = await fetch("static/css/prism-live.css");
-css = await css.text();
-
-$$("textarea.language-css.fill").forEach(t => {
-	t.value = css;
-	t.dispatchEvent(new InputEvent("input"));
-});
-
-var js = await fetch("static/js/prism-live.js");
-js = await js.text();
-
-$$("textarea.language-js.fill").forEach(t => {
-	t.value = js;
-	t.dispatchEvent(new InputEvent("input"));
-});
-
-
-})(Bliss, Bliss.$);
-
 function copy() {
 
   let resultCode = document.getElementById('result-code');
@@ -74,7 +47,7 @@ const convert = () => {
   let resultCode = document.getElementById('result-code');
 
   // get form values
-  let sigma = document.getElementById('input-textarea').value
+  let sigma = jar.toString()
   let pipeline = $('#pipeline-select').dropdown('get value');
   let target = $('#target-select').dropdown('get value');
   let format = $('#format-select').dropdown('get value');

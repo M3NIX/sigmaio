@@ -19,7 +19,7 @@
 	<!-- sigmaio css -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body onload="showFormats(); cli()" class="dark-mode">
+<body onload="showFormats(); showPipelines(); cli()" class="dark-mode">
 
   <nav style="padding: 20px 3% 30px 3%;">
     <div class="ui grid bottom aligned">
@@ -41,23 +41,12 @@
       <div class="column">
         <div class="ui form large">
           <div class="three fields">
-            <!-- Pipeline Select -->
+            <!-- Target Select -->
             <div class="field">
-              <label>Select pipeline(s): </label>
-              <select id="pipeline-select" onchange="convert(); cli()" multiple="" class="ui selection dropdown">
-                <option value></option>
-                <option value=""></option>
-                {% for name in pipelines.pipelines.keys() %}
-                <option value="{{ name }}">{{ name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <!-- Backend Select -->
-            <div class="field">
-              <label>Select backend:</label>
-              <select id="target-select" onchange="showFormats(); convert(); cli()" class="ui selection dropdown">
+              <label>Select target:</label>
+              <select id="target-select" onchange="showFormats(); showPipelines(); convert(); cli()" class="ui selection dropdown">
                 {% for name, backend in backends.items() %}
-                <option value="{{ name }}">{{ backend.text }}</option>
+                <option value="{{ name }}">{{ name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -66,7 +55,18 @@
               <label>Select output format:</label>
               <select id="format-select" onchange="convert(); cli()" class="ui selection dropdown">
                 {% for format in formats %}
-                <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
+                <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- Pipeline Select -->
+            <div class="field">
+              <label>Select pipeline(s): </label>
+              <select id="pipeline-select" onchange="convert(); cli()" multiple="" class="ui selection dropdown">
+                <option value></option>
+                <option value=""></option>
+                {% for name, pipeline in pipelines %}
+                <option hidden value="{{ name }}" backend="{{ pipeline.backends }}">{{ name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -202,6 +202,7 @@ level: high</code></pre>
         $('.ui.menu .ui.dropdown').dropdown({
           on: 'hover'
         });
+      $('#target-select').dropdown('set selected', "splunk");
       })
     ;
   </script>

@@ -26,6 +26,19 @@ const showFormats = () => {
 
 }
 
+const showPipelines = () => {
+  let backend = $('#target-select').dropdown('get value');
+
+  let options = $('#pipeline-select').find("option[backend$=" + backend + "], option[backend$=all]")
+
+	values = []
+	options = [...options]
+	options.forEach(option => {
+		values.push({"value": option.value, "name": option.innerHTML})
+	});
+  $('#pipeline-select').dropdown('change values', values);
+}
+
 const cli = () => {
 	
   let cliCode = document.getElementById('cli-code');

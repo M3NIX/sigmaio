@@ -7,19 +7,30 @@ import base64
 from flask import Flask, render_template, request
 
 from sigma.conversion.base import Backend
-from sigma.cli.backends import backends
-from sigma.cli.pipelines import pipelines
+from sigma.plugins import InstalledSigmaPlugins
 from sigma.collection import SigmaCollection
 from sigma.exceptions import SigmaError
 
 app = Flask(__name__)
+plugins = InstalledSigmaPlugins.autodiscover()
+backends = plugins.backends
+pipeline_resolver = plugins.get_pipeline_resolver()
+pipelines = list(pipeline_resolver.list_pipelines()) 
+
 
 @app.route('/')
 def home():
     formats = []
     for backend in backends.keys():
-        for name, description in backends[backend].formats.items():
+        for name, description in plugins.backends[backend].formats.items():
             formats.append({"name": name, "description": description, "backend": backend})
+    
+    for name, pipeline in pipelines:
+        if len(pipeline.allowed_backends) > 0:
+            pipeline.backends = ", ".join(pipeline.allowed_backends)
+        else:
+            pipeline.backends = "all"
+
     return render_template('index.html', backends=backends, pipelines=pipelines, formats=formats)
 
 @app.route('/sigma', methods=['POST'])
@@ -41,8 +52,8 @@ def convert():
     target = request.json['target']
     format = request.json['format']
 
-    backend_class = backends[target].cls
-    processing_pipeline = pipelines.resolve(tuple(pipeline))
+    backend_class = backends[target]
+    processing_pipeline = pipeline_resolver.resolve(pipeline)
     backend : Backend = backend_class(processing_pipeline=processing_pipeline)
 
     try:
@@ -56,4 +67,4 @@ def convert():
     return result
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8000)))

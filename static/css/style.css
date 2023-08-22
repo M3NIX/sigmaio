@@ -60,3 +60,17 @@ pre[class*=language-] {
   min-height: 49px;
   cursor: text;
 }
+
+.notification-box {
+    position: fixed !important;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: none; /* initially hidden */
+}
+
+.dark-mode .ui.modal>.header,
+.dark-mode .ui.modal>.content {
+  color: white;
+  background-color: #25282c;
+}

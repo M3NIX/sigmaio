@@ -12,14 +12,14 @@
   <title>sigmaio - sigma in, anything out</title>
 
   <!-- Semantic UI-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css" integrity="sha512-KXol4x3sVoO+8ZsWPFI/r5KBVB/ssCGB5tsv2nVOKwLg33wTFP3fmnXa47FdSVIshVTgsYk/1734xSk9aFIa4A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- Prism CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-atom-dark.min.css" integrity="sha512-GZPS1oCebjx8g/ZkrTTvWirW+4wDkzIsilUQPXcZzuDpDzoH5brM2AojiFjo6ObIWeM68ZDostvdjaS9MNYCTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- sigmaio css -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body onload="showFormats(); cli()" class="dark-mode">
+<body onload="showFormats(); showPipelines(); cli()" class="dark-mode">
 
   <nav style="padding: 20px 3% 30px 3%;">
     <div class="ui grid bottom aligned">
@@ -41,23 +41,12 @@
       <div class="column">
         <div class="ui form large">
           <div class="three fields">
-            <!-- Pipeline Select -->
+            <!-- Target Select -->
             <div class="field">
-              <label>Select pipeline(s): </label>
-              <select id="pipeline-select" onchange="convert(); cli()" multiple="" class="ui selection dropdown">
-                <option value></option>
-                <option value=""></option>
-                {% for name in pipelines.pipelines.keys() %}
-                <option value="{{ name }}">{{ name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <!-- Backend Select -->
-            <div class="field">
-              <label>Select backend:</label>
-              <select id="target-select" onchange="showFormats(); convert(); cli()" class="ui selection dropdown">
+              <label>Select target:</label>
+              <select id="target-select" onchange="showFormats(); showPipelines(); convert(); cli()" class="ui selection dropdown">
                 {% for name, backend in backends.items() %}
-                <option value="{{ name }}">{{ backend.text }}</option>
+                <option value="{{ name }}">{{ name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -66,7 +55,18 @@
               <label>Select output format:</label>
               <select id="format-select" onchange="convert(); cli()" class="ui selection dropdown">
                 {% for format in formats %}
-                <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.description }}</option>
+                <option hidden backend="{{ format.backend }}" value="{{ format.name }}">{{ format.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- Pipeline Select -->
+            <div class="field">
+              <label>Select pipeline(s): </label>
+              <select id="pipeline-select" onchange="convert(); cli()" multiple="" class="ui selection dropdown">
+                <option value></option>
+                <option value=""></option>
+                {% for name, pipeline in pipelines %}
+                <option hidden value="{{ name }}" backend="{{ pipeline.backends }}">{{ name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -78,10 +78,10 @@
           <div class="ten wide column">
              <pre style="margin: 0; margin-top: 5px;"><code id="cli-code" class="language-bash"></code></pre>
           </div>
-          <div class="four wide column right floated">
+          <div class="four wide column left floated">
             <div style="margin-top: 10px;" class="ui buttons">
-              <button id="convert-button" onclick="convert()" class="ui blue button">Convert</button>
               <button id="copy-button" onclick="copy()" class="ui button">Copy</button>
+              <button id="info-button" onclick="info()" class="ui button grey">Info</button>
             </div>
           </div>
         </div>
@@ -170,11 +170,32 @@ level: high</div></pre>
       </div>
     </div>
   </div>
+
+  <div class="ui compact message green notification-box hidden">
+      <i class="close icon"></i>
+      <div class="header">
+          Success!
+      </div>
+      <p>Check your clipboard ;)</p>
+  </div>
+
+  <div class="ui inverted black modal">
+    <i class="close icon"></i>
+    <div class="header">
+        requirements.txt
+    </div>
+    <div class="content">
+        <!-- {{ requirements }} -->
+        {% for line in requirements.split('\n') if line %}
+            <p>{{ line }}</p>
+        {% endfor %}
+    </div>
+  </div>
  
 
 	<!-- Semantic UI -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js" integrity="sha512-Xo0Jh8MsOn72LGV8kU5LsclG7SUzJsWGhXbWcYs2MAmChkQzwiW/yTQwdJ8w6UA9C6EVG18GHb/TrYpYCjyAQw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<!-- PrismJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js" integrity="sha512-RDQSW3KoqJMiX0L/UBgwBmH1EmRYp8LBOiLaA8rBHIy+7OGP/7Gxg8vbt8wG4ZYd29P0Fnoq6+LOytCqx3cyoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-yaml.min.js" integrity="sha512-6O/PZimM3TD1NN3yrazePA4AbZrPcwt1QCGJrVY7WoHDJROZFc9TlBvIKMe+QfqgcslW4lQeBzNJEJvIMC8WhA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -199,8 +220,12 @@ level: high</div></pre>
         $('.ui.menu .ui.dropdown').dropdown({
           on: 'hover'
         });
+      $('#target-select').dropdown('set selected', "splunk");
       })
     ;
+    $('.message .close, .ui.modal .close').on('click', function() {
+        $(this).closest('.message, .ui.modal').transition('fade');
+    });
   </script>
 </body>
 </html>

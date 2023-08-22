@@ -3,12 +3,17 @@ function copy() {
   let resultCode = document.getElementById('result-code');
   navigator.clipboard.writeText(resultCode.value);
 
-  halfmoon.initStickyAlert({
-    content: "It is in your clipboard",
-    alertType: "alert-success",
-    title: "Copied query",
-    timeShown: 2000
-  })
+  // alert("successfully copied")
+  $('.notification-box').transition('fade in'); // display the notification
+
+  setTimeout(function(){
+      $('.notification-box').transition('fade out'); // hide the notification after 2 seconds
+  }, 2000);
+}
+
+function info() {
+  $('.ui.modal').modal('show');
+  $('.ui.modal').addClass('inverted');
 }
 
 const showFormats = () => {
@@ -26,6 +31,19 @@ const showFormats = () => {
 
 }
 
+const showPipelines = () => {
+  let backend = $('#target-select').dropdown('get value');
+
+  let options = $('#pipeline-select').find("option[backend$=" + backend + "], option[backend$=all]")
+
+	values = []
+	options = [...options]
+	options.forEach(option => {
+		values.push({"value": option.value, "name": option.innerHTML})
+	});
+  $('#pipeline-select').dropdown('change values', values);
+}
+
 const cli = () => {
 	
   let cliCode = document.getElementById('cli-code');
@@ -34,6 +52,9 @@ const cli = () => {
   let format = $('#format-select').dropdown('get value');
 
 	cliCommand = "sigma convert"
+	if(pipeline.length === 0){
+		cliCommand = cliCommand + " --without-pipeline "
+	}
 	pipeline.forEach(e => {
 		cliCommand = cliCommand + " -p " + e
 	});

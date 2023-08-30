@@ -7,7 +7,7 @@ pysigma-backend-cortexxdr==0.1.1
 pysigma-backend-elasticsearch==1.0.5
 pySigma-backend-loki @ git+https://github.com/grafana/pySigma-backend-loki.git@452aa0d8bb096bbabdca5a83a884c45662dec666
 pySigma-backend-microsoft365defender @ git+https://github.com/AttackIQ/pySigma-backend-microsoft365defender.git@731db4b6c7cbab8898973b4350d93268e135c495
-pysigma-backend-opensearch==1.0.0
+pysigma-backend-opensearch==1.0.1
 pysigma-backend-qradar==0.3.3
 pySigma-backend-QRadar-AQL==0.2.3
 pysigma-backend-sentinelone==0.1.2

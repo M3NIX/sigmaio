@@ -4,7 +4,7 @@ pysigma==0.9.11
 pySigma-backend-azure @ git+https://github.com/sifex/pySigma-backend-azure.git@9c35b78cd4d4891e1b46ccf21ed555ffb10b96e6
 pysigma-backend-carbonblack==0.1.4
 pysigma-backend-cortexxdr==0.1.1
-pysigma-backend-elasticsearch==1.0.5
+pysigma-backend-elasticsearch==1.0.6
 pySigma-backend-loki @ git+https://github.com/grafana/pySigma-backend-loki.git@452aa0d8bb096bbabdca5a83a884c45662dec666
 pySigma-backend-microsoft365defender @ git+https://github.com/AttackIQ/pySigma-backend-microsoft365defender.git@731db4b6c7cbab8898973b4350d93268e135c495
 pysigma-backend-opensearch==1.0.0

@@ -16,4 +16,4 @@ pysigma-backend-splunk==1.0.2
 pySigma-backend-stix @ git+https://github.com/barvhaim/pySigma-backend-stix@0d7c05e187249c26f5abb99f63bf839c78705d1e
 pysigma-pipeline-crowdstrike==1.0.0
 pysigma-pipeline-sysmon==1.0.2
-pysigma-pipeline-windows==1.1.0
+pysigma-pipeline-windows==1.1.1

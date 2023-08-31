@@ -1,5 +1,5 @@
 flask==2.3.3
-sigma-cli==0.7.6
+sigma-cli==0.7.7
 pysigma==0.9.11
 pySigma-backend-azure @ git+https://github.com/sifex/pySigma-backend-azure.git@9c35b78cd4d4891e1b46ccf21ed555ffb10b96e6
 pysigma-backend-carbonblack==0.1.4
